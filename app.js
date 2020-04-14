@@ -38,6 +38,24 @@ function createEngineer() {
 			runProgram();
 		})
 };
+function createManager() {
+	inquirer.prompt(questions)
+		.then(function (answers) {
+			console.log(answers)
+			var manager1 = new addManager(answers.name, answers.id, answers.email, answers.role);
+			console.log(manager1);
+			runProgram();
+		})
+};
+function createIntern() {
+	inquirer.prompt(questions)
+		.then(function (answers) {
+			console.log(answers)
+			var intern1 = new addIntern(answers.name, answers.id, answers.email, answers.role);
+			console.log(intern1);
+			runProgram();
+		})
+};
 
 function runProgram() {
 	inquirer.prompt({
@@ -50,15 +68,31 @@ function runProgram() {
 		console.log(answers)
 		if (answers.role[0] === "Engineer") {
 			createEngineer();
-
-		} else if (answers.role[0] === "done") {
+		}
+		else if (answers.role[0] === "Manager") {
+			createManager();
+		}
+		else if (answers.role[0] === "Intern") {
+			createIntern();
+		}
+		else if (answers.role[0] === "done") {
 			console.log("we are done");
 		}
 	})
 }
 runProgram();
 
-
+class addEmployee {
+	constructor(name, id, email, role) {
+		this.name = name;
+		this.id = id;
+		this.email = email;
+		this.role = role;
+	}
+	getEmployee() {
+		return `${this.name}, ${this.id}, ${this.email}, ${this.github}`;
+	}
+}
 class addEngineer {
 	constructor(name, id, email, github) {
 		this.name = name;
@@ -67,9 +101,33 @@ class addEngineer {
 		this.github = github;
 	}
 	getEngineer() {
-		return `${this.name}, ${this.id}, ${this.email}`;
+		return `${this.name}, ${this.id}, ${this.email}, ${this.github}`;
 	}
 }
+class addManager {
+	constructor(name, id, email, officeNumber) {
+		this.name = name;
+		this.id = id;
+		this.email = email;
+		this.officeNumber = officeNumber
+	}
+	getManager() {
+		return `${this.name}, ${this.id}, ${this.email}, ${this.officeNumber}`;
+	}
+}
+class addIntern {
+	constructor(name, id, email, school) {
+		this.name = name;
+		this.id = id;
+		this.email = email;
+		this.school = school;
+	}
+	getIntern() {
+		return `${this.name}, ${this.id}, ${this.email}, ${this.school}`;
+	}
+}
+//render();
+//fs.writeFile(team.html, output, function() {
 
-
-
+//	writeFile();
+//}
