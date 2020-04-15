@@ -33,7 +33,7 @@ function createEngineer() {
 	inquirer.prompt(questions)
 		.then(function (answers) {
 			console.log(answers)
-			var engineer1 = new addEngineer(answers.name, answers.id, answers.email, answers.role);
+			var engineer1 = new addEngineer(answers.name, answers.id, answers.email, answers.github);
 			console.log(engineer1);
 			runProgram();
 		})
@@ -67,16 +67,37 @@ function runProgram() {
 	}).then(function (answers) {
 		console.log(answers)
 		if (answers.role[0] === "Engineer") {
-			createEngineer();
+			inquirer.prompt({
+				type: "input",
+				name: "github",
+				message: "Enter github name"
+			}).then(response => {
+				console.log(response);
+				createEngineer();
+			})
 		}
-		else if (answers.role[0] === "Manager") {
-			createManager();
+		else if (answers.role[1] === "Manager") {
+			inquirer.prompt({
+				type: "input",
+				name: "officeNumber",
+				message: "Enter office number"
+			}).then(response => {
+				console.log(response);
+				createManager();
+			})
 		}
-		else if (answers.role[0] === "Intern") {
-			createIntern();
+		else if (answers.role[2] === "Intern") {
+			inquirer.prompt({
+				type: "input",
+				name: "school",
+				message: "Enter school name"
+			}).then(response => {
+				console.log(response);
+				createIntern();
+			})
 		}
-		else if (answers.role[0] === "done") {
-			console.log("we are done");
+		else if (answers.role[3] === "done") {
+			console.log("end employee data entry");
 		}
 	})
 }
@@ -127,7 +148,16 @@ class addIntern {
 	}
 }
 //render();
-//fs.writeFile(team.html, output, function() {
-
-//	writeFile();
-//}
+/*fs.writeFile(outputPATH, output, (err)  => {
+					if (err) {
+						return console.log(err);
+					}
+				});
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		console.log('success!');
+	},
+};
+*/
