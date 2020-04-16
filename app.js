@@ -5,9 +5,11 @@ const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
 const path = require('path');
 const fs = require('fs');
+const render = require('./lib/htmlRenderer');
+
 const OUTPUT_DIR = path.resolve(__dirname, 'output');
 const outputPath = path.join(OUTPUT_DIR, 'team.html');
-const render = require('./lib/htmlRenderer');
+
 
 let teamArr = [];
 
@@ -56,12 +58,12 @@ const questionsMgr = [
 		},
 	},
 	{
-		type: 'input', name: 'officeNumber', message: "What's the number?"
+		type: 'input', name: 'officeNumber', message: "What is the office number?"
 	}
 ];
 const questionsIntern = [
 	{
-		type: 'input', name: 'name', message: 'Enter employee name',
+		type: 'input', name: 'name', message: 'Enter Intern name',
 		validate: function validateName(name) {
 			return name !== '';
 		},
@@ -87,7 +89,7 @@ const questionsIntern = [
 function runProgram() {
 	inquirer.prompt({
 		type: 'list',
-		message: 'Check employee role',
+		message: 'Choose employee role',
 		name: 'role',
 		choices: ['Engineer', 'Manager', 'Intern', 'End Data Entry']
 
@@ -105,11 +107,11 @@ function runProgram() {
 			createIntern();
 		}
 		else if (answers.role === "End Data Entry") {
-			console.log("end employee data entry");
+			console.log("end employee data entry and generate roster");
 			//console.log(teamArr);
-			const htmlRender = render(teamArr)
+			const htmlPage = render(teamArr);
 			//console.log(holdRender);
-			fs.writeFile(outputPATH, htmlRender, function (err) {
+			fs.writeFile(outputPath, htmlPage, function (err) {
 				if (err) {
 					console.log(err)
 				}
@@ -122,7 +124,7 @@ function createEngineer() {
 	inquirer.prompt(questionsEng)
 		.then(function (answers) {
 			console.log(answers)
-			var engineer1 = new addEngineer(answers.name, answers.id, answers.email, answers.github);
+			var engineer1 = new Engineer(answers.name, answers.id, answers.email, answers.github);
 			teamArr.push(engineer1);
 			console.log(teamArr);
 			runProgram();
@@ -133,7 +135,7 @@ function createManager() {
 	inquirer.prompt(questionsMgr)
 		.then(function (answers) {
 			console.log(answers)
-			var manager1 = new addManager(answers.name, answers.id, answers.email, answers.officeNumber);
+			var manager1 = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
 			teamArr.push(manager1);
 			runProgram();
 		})
@@ -142,57 +144,10 @@ function createIntern() {
 	inquirer.prompt(questionsIntern)
 		.then(function (answers) {
 			console.log(answers)
-			var intern1 = new addIntern(answers.roleData, answers.name, answers.id, answers.email, answers.school);
+			var intern1 = new Intern(answers.name, answers.id, answers.email, answers.school);
 			teamArr.push(intern1);
 			runProgram();
 		})
 };
 runProgram();
 
-class addEmployee {
-	constructor(name, id, email, role) {
-		this.name = name;
-		this.id = id;
-		this.email = email;
-		this.role = role;
-	}
-	getEmployee() {
-		return `${this.name}, ${this.id}, ${this.email}`;
-	}
-}
-class addEngineer {
-	constructor(name, id, email, github) {
-		this.name = name;
-		this.id = id;
-		this.email = email;
-		this.github = github;
-		this.role = "Engineer";
-	}
-	getEngineer() {
-		return `${this.name}, ${this.id}, ${this.email}, ${this.github}`;
-	}
-}
-class addManager {
-	constructor(name, id, email, officeNumber) {
-		this.name = name;
-		this.id = id;
-		this.email = email;
-		this.officeNumber = officeNumber
-		this.role = "Manager";
-	}
-	getManager() {
-		return `${this.name}, ${this.id}, ${this.email}, ${this.officeNumber}`;
-	}
-}
-class addIntern {
-	constructor(name, id, email, school) {
-		this.name = name;
-		this.id = id;
-		this.email = email;
-		this.school = school;
-		this.role = "Intern";
-	}
-	getIntern() {
-		return `${this.name}, ${this.id}, ${this.email}, ${this.school}`;
-	}
-}
