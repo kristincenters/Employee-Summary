@@ -1,11 +1,12 @@
-const Engineer = require('./Develop/lib/Engineer');
-const Intern = require('./Develop/lib/Intern');
+const Manager = require("./lib/Manager");
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
 const path = require('path');
 const fs = require('fs');
 const OUTPUT_DIR = path.resolve(__dirname, 'output');
 const outputPath = path.join(OUTPUT_DIR, 'team.html');
-const render = require('./Develop/lib/htmlRenderer');
+const render = require('./lib/htmlRenderer');
 
 let teamArr = [];
 
@@ -56,7 +57,7 @@ const questionsMgr = [
 	{
 		type: 'input', name: 'officeNumber', message: "What's the number?"
 	}
-]
+];
 const questionsIntern = [
 	{
 		type: 'input', name: 'name', message: 'Enter employee name',
@@ -80,7 +81,7 @@ const questionsIntern = [
 	{
 		type: 'input', name: 'school', message: "School Name?"
 	}
-]
+];
 
 function runProgram() {
 	inquirer.prompt({
@@ -104,13 +105,18 @@ function runProgram() {
 		}
 		else if (answers.role === "End Data Entry") {
 			console.log("end employee data entry");
-			console.log(teamArr);
-			var holdRender = render(teamArr)
-			console.log(holdRender);
-
+			//console.log(teamArr);
+			const htmlRender = render(teamArr)
+			//console.log(holdRender);
+			fs.writeFile(outputPATH, htmlRender, function (err) {
+				if (err) {
+					console.log(err)
+				}
+			})
 		}
 	})
 }
+
 function createEngineer() {
 	inquirer.prompt(questionsEng)
 		.then(function (answers) {
@@ -189,17 +195,3 @@ class addIntern {
 		return `${this.name}, ${this.id}, ${this.email}, ${this.school}`;
 	}
 }
-//render();
-/*fs.writeFile(outputPATH, render(teamArr), (err)  => {
-					if (err) {
-						return console.log(err);
-					}
-				});
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		console.log('success!');
-	},
-};
-*/
