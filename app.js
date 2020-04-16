@@ -12,7 +12,7 @@ const outputPath = path.join(OUTPUT_DIR, 'team.html');
 
 
 let teamArr = [];
-
+// team member data entry questions for three employee roles: manager, engineer and intern
 const questionsEng = [
 	{
 		type: 'input', name: 'name', message: 'Enter employee name',
@@ -85,7 +85,7 @@ const questionsIntern = [
 		type: 'input', name: 'school', message: "School Name?"
 	}
 ];
-
+// choose employee role, selection will prompt questions for specific role
 function runProgram() {
 	inquirer.prompt({
 		type: 'list',
@@ -95,7 +95,6 @@ function runProgram() {
 
 
 	}).then(function (answers) {
-		console.log(answers)
 
 		if (answers.role === "Engineer") {
 			createEngineer();
@@ -106,11 +105,9 @@ function runProgram() {
 		else if (answers.role === "Intern") {
 			createIntern();
 		}
+		// app ends with this choice and html files are dynamically generated 
 		else if (answers.role === "End Data Entry") {
-			console.log("end employee data entry and generate roster");
-			//console.log(teamArr);
 			const htmlPage = render(teamArr);
-			//console.log(holdRender);
 			fs.writeFile(outputPath, htmlPage, function (err) {
 				if (err) {
 					console.log(err)
@@ -119,14 +116,12 @@ function runProgram() {
 		}
 	})
 }
-
+// create new engineer, manager and intern objects with question prompts and output for html file
 function createEngineer() {
 	inquirer.prompt(questionsEng)
 		.then(function (answers) {
-			console.log(answers)
 			var engineer1 = new Engineer(answers.name, answers.id, answers.email, answers.github);
 			teamArr.push(engineer1);
-			console.log(teamArr);
 			runProgram();
 
 		})
@@ -134,7 +129,6 @@ function createEngineer() {
 function createManager() {
 	inquirer.prompt(questionsMgr)
 		.then(function (answers) {
-			console.log(answers)
 			var manager1 = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
 			teamArr.push(manager1);
 			runProgram();
@@ -143,7 +137,6 @@ function createManager() {
 function createIntern() {
 	inquirer.prompt(questionsIntern)
 		.then(function (answers) {
-			console.log(answers)
 			var intern1 = new Intern(answers.name, answers.id, answers.email, answers.school);
 			teamArr.push(intern1);
 			runProgram();
