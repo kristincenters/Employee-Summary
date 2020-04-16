@@ -1,3 +1,4 @@
+const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
@@ -156,7 +157,7 @@ class addEmployee {
 		this.role = role;
 	}
 	getEmployee() {
-		return `${this.name}, ${this.id}, ${this.email}, ${this.github}`;
+		return `${this.name}, ${this.id}, ${this.email}`;
 	}
 }
 class addEngineer {
